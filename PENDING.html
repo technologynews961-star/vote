@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Name & Sr No Search</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+    padding: 20px;
+    color: #222;
+  }
+  .container {
+    max-width: 700px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 20px;
+  }
+  h1 {
+    text-align: center;
+    font-size: 22px;
+    color: #2c3e50;
+    margin-bottom: 15px;
+  }
+  input[type="text"] {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border 0.2s;
+  }
+  input[type="text"]:focus {
+    border-color: #3498db;
+  }
+  .count {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #666;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  th, td {
+    padding: 10px 8px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 15px;
+  }
+  th {
+    background: #2c3e50;
+    color: #fff;
+    position: sticky;
+    top: 0;
+  }
+  tr:hover {
+    background: #f1f7fd;
+  }
+  .table-wrap {
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    border-radius: 6px;
+  }
+  .no-result {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+  }
+  mark {
+    background: #ffe58a;
+    padding: 0;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Sr No & Name Search</h1>
+  <input type="text" id="searchInput" placeholder="Type Sr No or Name to search...">
+  <div class="count" id="countDisplay"></div>
+  <div class="table-wrap">
+    <table id="dataTable">
+      <thead>
+        <tr><th style="width:80px;">Sr No</th><th>Name</th></tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+  <div class="no-result" id="noResult" style="display:none;">No matching records found.</div>
+</div>
+
+<script>
+const data = [{"Sr No":18,"Name":"Dolly Mukteshwar Muniya"},{"Sr No":19,"Name":"Suchita Anita Bhutale"},{"Sr No":37,"Name":"Sangita Sunil Gajare"},{"Sr No":55,"Name":"Pinky Ramesh Prajapati"},{"Sr No":67,"Name":"Ashwini Vinod Shinde"},{"Sr No":72,"Name":"Sunil Omprakash Singh"},{"Sr No":75,"Name":"Vaishali Harilal Salunke"},{"Sr No":80,"Name":"Kamlesh Kedar Yadav"},{"Sr No":92,"Name":"Satish Nanda Kamble"},{"Sr No":95,"Name":"Bhushan Chandrakant Ghatim"},{"Sr No":103,"Name":"Roshan Datpal"},{"Sr No":109,"Name":"Sanket Indal Prajapati"},{"Sr No":120,"Name":"Vaishali Ramdas Chandekar"},{"Sr No":121,"Name":"Kali Govind Mani Barik"},{"Sr No":139,"Name":"Dinesh Ramprasad Gupta"},{"Sr No":141,"Name":"Vilas Namdev Bomate"},{"Sr No":142,"Name":"Nanda Vilas Bomate"},{"Sr No":143,"Name":"Santosh Vilas Bomate"},{"Sr No":144,"Name":"Gangaram Purnaji Tinkar"},{"Sr No":145,"Name":"Meenabai Gangaram Vinkare"},{"Sr No":146,"Name":"Gangubai Dhumaji Gaikwad"},{"Sr No":148,"Name":"Ravindra Dhumaji Gaikwad"},{"Sr No":153,"Name":"Prakash Mahadev Sonawane"},{"Sr No":167,"Name":"Jagdish Shagan"},{"Sr No":169,"Name":"Kanhaiya Parmanand Prasad"},{"Sr No":170,"Name":"Kedar Jitu Yadav"},{"Sr No":171,"Name":"Ram Avatar Brahma Prasad Yadav"},{"Sr No":180,"Name":"Indubai Govind Panchal"},{"Sr No":181,"Name":"Suresh Tukaram Panchal"},{"Sr No":214,"Name":"Surendra Praful Das"},{"Sr No":224,"Name":"Sunita Nirmal Patel"},{"Sr No":231,"Name":"Devmal Ganesh Karkar"},{"Sr No":239,"Name":"Savitridevi Pande"},{"Sr No":270,"Name":"Leelabai Gunabaram Mule"},{"Sr No":272,"Name":"Jayashree Sachindra Thorat"},{"Sr No":273,"Name":"Ravinder Bacha Thorat"},{"Sr No":281,"Name":"Ramdas Mukta Bhagat"},{"Sr No":285,"Name":"Raghunath Arjun Shivgan"},{"Sr No":286,"Name":"Rekha Raghunath Shivgan"},{"Sr No":295,"Name":"Chandrapati Ramdev Patel"},{"Sr No":296,"Name":"Ram Asre Ramdev Patel"},{"Sr No":302,"Name":"Narhari Suryabhan Annapurna"},{"Sr No":330,"Name":"Suresh Sopan Prajapati"},{"Sr No":334,"Name":"John Amaras D'Souza"},{"Sr No":335,"Name":"Dudhnath Raman Yadav"},{"Sr No":350,"Name":"Namita Nitai Sah"},{"Sr No":351,"Name":"Nitai Dharampada Sah"},{"Sr No":352,"Name":"Radheshyam Dhandopath Sah"},{"Sr No":353,"Name":"Ganesh Digai Shah"},{"Sr No":354,"Name":"Pinky Nitai Shah"},{"Sr No":358,"Name":"Ramdev Sudarshan Gupta"},{"Sr No":371,"Name":"Gopal Singh Dhaneshwar Rajput"},{"Sr No":372,"Name":"Ashok Dhaneshwar Rajput"},{"Sr No":401,"Name":"Ramrakha Bakelal Gupta"},{"Sr No":402,"Name":"Nishadevi Ramrakha Gupta"},{"Sr No":407,"Name":"Ramgun Pan Kushwaha"},{"Sr No":408,"Name":"Ramesh Pan Kushwaha"},{"Sr No":411,"Name":"Bajilal Bhagru Prasad"},{"Sr No":415,"Name":"Janardan Shyamdev Chauhan"},{"Sr No":416,"Name":"Gyantidevi Janardan Chauhan"},{"Sr No":417,"Name":"Mala Shyamdev Chauhan"},{"Sr No":418,"Name":"Lalbachan Shyamdev Chauhan"},{"Sr No":419,"Name":"Phulwati Lalbachan Chauhan"},{"Sr No":420,"Name":"Sonamati Mala Chauhan"},{"Sr No":421,"Name":"Prakash Narayan Mohite"},{"Sr No":422,"Name":"Chandrakant Pandurang Sitape"},{"Sr No":426,"Name":"Bijnarayan Mahendra Singh"},{"Sr No":427,"Name":"Lakshmidevi Bijnarayan Singh"},{"Sr No":431,"Name":"Swapnadas Praphull Das"},{"Sr No":433,"Name":"Chhedi Singasan Yadav"},{"Sr No":437,"Name":"Ramjeet Akista Sahu"},{"Sr No":438,"Name":"Palatan Saju Shah"},{"Sr No":439,"Name":"Dhimanidevi Palatan Sahu"},{"Sr No":443,"Name":"Haraksan Chhot Bhagat"},{"Sr No":444,"Name":"Vyarka Chhot Bhagat"},{"Sr No":449,"Name":"Indumati Sadashiv Naik"},{"Sr No":450,"Name":"Govind Sadashiv Naik"},{"Sr No":467,"Name":"Ramrat Chhavram Prasad"},{"Sr No":470,"Name":"Shavanta Ambalal Patel"},{"Sr No":473,"Name":"Ambalal Akshay Patel"},{"Sr No":499,"Name":"Parvati Chandrakant Navale"},{"Sr No":504,"Name":"Pratibha Nirgun Kushwaha"},{"Sr No":514,"Name":"Mayur Bharat"},{"Sr No":525,"Name":"Yuchika Manishankar Dubey"},{"Sr No":533,"Name":"Pushpa Lakshman Reval"},{"Sr No":536,"Name":"Kunjbihari Digvijay Goswami"},{"Sr No":541,"Name":"Puran Perumal"},{"Sr No":542,"Name":"Sangita Perumal"},{"Sr No":545,"Name":"Avantika Anil Patkar"},{"Sr No":546,"Name":"Jyoti Manohar Patkar"},{"Sr No":556,"Name":"Rekha Ashok Valmiki"},{"Sr No":559,"Name":"Bharti Shantaram Sakpal"},{"Sr No":560,"Name":"Dipti Shantaram Sakpal"},{"Sr No":581,"Name":"Phoolchand Chandrapati Patel"},{"Sr No":582,"Name":"Ramji Ramdev Patel"},{"Sr No":589,"Name":"Santosh Ramdas Chandekar"},{"Sr No":591,"Name":"Somesh Sudesh Pardhi"},{"Sr No":592,"Name":"Suresh Sitaram Pardhi"},{"Sr No":593,"Name":"Sital Suresh Pardhi"},{"Sr No":595,"Name":"Santosh Ramdas Chandekar"},{"Sr No":596,"Name":"Pradeep Sadhu Shinde"},{"Sr No":597,"Name":"Sheela Murari Kelaskar"},{"Sr No":607,"Name":"Sharda Vilas Jadhav"},{"Sr No":610,"Name":"Rekha Lakshman Sonpurav"},{"Sr No":611,"Name":"Rekha Shrimarav Sonawane"},{"Sr No":613,"Name":"Rajana Narayan Lawarkar"},{"Sr No":614,"Name":"Prashant Sudam Shinde"},{"Sr No":615,"Name":"Mayuri Gajanan Bade"},{"Sr No":616,"Name":"Devshala Ramdas Chandekar"},{"Sr No":617,"Name":"Ramdas Ayodhya Chandekar"},{"Sr No":618,"Name":"Chhaya Ramdas Chandekar"},{"Sr No":619,"Name":"Nirja Arun Palwar"},{"Sr No":620,"Name":"Rohit Vinay Tilgulekar"},{"Sr No":621,"Name":"Shatruhan Singh Singh"},{"Sr No":622,"Name":"Ranjana Gyaneshwar Kamble"},{"Sr No":623,"Name":"Jayashree Jayvant Panchar"},{"Sr No":624,"Name":"Mohan Sundaram Chelian"},{"Sr No":625,"Name":"Venu Mohan Chelian"},{"Sr No":626,"Name":"Prakash Mohan Chelian"},{"Sr No":627,"Name":"Murali Mohan Chelian"},{"Sr No":628,"Name":"Sangita Prakash Chelian"},{"Sr No":629,"Name":"Bajrang Hari Kavale"},{"Sr No":631,"Name":"Panchram Rajaram Kevat"},{"Sr No":632,"Name":"Suraj Shankarram Kevat"},{"Sr No":634,"Name":"Chandrashekhar Kushwaha"},{"Sr No":639,"Name":"Lakshmi Kevat"},{"Sr No":639,"Name":"Jyoti Faujdar Singh"},{"Sr No":642,"Name":"Sadiq Naimulla Shaikh"},{"Sr No":646,"Name":"Mohammad Noor Shaikh"},{"Sr No":648,"Name":"Damayanti Damodar Kondane"},{"Sr No":649,"Name":"Dhirendra Shyam Pandey"},{"Sr No":651,"Name":"Naaz Shaikh"},{"Sr No":654,"Name":"Sneha Ganesh Mehta"},{"Sr No":655,"Name":"Suraj Pramod Gupta"},{"Sr No":656,"Name":"Sharif Khajamiya Chardewali"},{"Sr No":658,"Name":"Bashir Latif Shaikh"},{"Sr No":660,"Name":"Mitali Jadhav"},{"Sr No":666,"Name":"Shilpa Ashok Gaikwad"},{"Sr No":669,"Name":"Hemangini Gopal Mausale"},{"Sr No":670,"Name":"Pooja Gautam Kundeval"},{"Sr No":673,"Name":"Sharikula Bind"},{"Sr No":678,"Name":"Shahnaz Khatoon"},{"Sr No":680,"Name":"Darshana Subodh Mohite"},{"Sr No":684,"Name":"Kalpana Tiwari"},{"Sr No":690,"Name":"Yogita Nilesh Dhawde"},{"Sr No":692,"Name":"Afreen Khan"},{"Sr No":693,"Name":"Afreen Asif Hashmi"},{"Sr No":695,"Name":"Leela Ishwar Gurav"},{"Sr No":696,"Name":"Baba Dhaku Dhurvi"},{"Sr No":697,"Name":"Rupali Manoj Nayar"},{"Sr No":698,"Name":"Madhavi Ramesh Dighe"},{"Sr No":699,"Name":"Deepak Buddharam Kevat"},{"Sr No":700,"Name":"Manasi Manoj Goswami"},{"Sr No":701,"Name":"Kalpana Pujari"},{"Sr No":702,"Name":"Priyanka Mukesh Thakur"}];
+
+const tableBody = document.getElementById('tableBody');
+const searchInput = document.getElementById('searchInput');
+const countDisplay = document.getElementById('countDisplay');
+const noResult = document.getElementById('noResult');
+
+function highlight(text, query) {
+  if (!query) return text;
+  const idx = text.toString().toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return text;
+  return text.toString().substring(0, idx) +
+         "<mark>" + text.toString().substring(idx, idx + query.length) + "</mark>" +
+         text.toString().substring(idx + query.length);
+}
+
+function renderTable(rows, query) {
+  tableBody.innerHTML = '';
+  if (rows.length === 0) {
+    noResult.style.display = 'block';
+    document.getElementById('dataTable').style.display = 'none';
+  } else {
+    noResult.style.display = 'none';
+    document.getElementById('dataTable').style.display = 'table';
+    rows.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${highlight(r["Sr No"], query)}</td><td>${highlight(r["Name"], query)}</td>`;
+      tableBody.appendChild(tr);
+    });
+  }
+  countDisplay.textContent = `Showing ${rows.length} of ${data.length} records`;
+}
+
+searchInput.addEventListener('input', function() {
+  const query = this.value.trim().toLowerCase();
+  if (query === '') {
+    renderTable(data, '');
+    return;
+  }
+  const filtered = data.filter(r =>
+    r["Sr No"].toString().toLowerCase().includes(query) ||
+    r["Name"].toLowerCase().includes(query)
+  );
+  renderTable(filtered, query);
+});
+
+renderTable(data, '');
+</script>
+</body>
+</html>
