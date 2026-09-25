@@ -116,43 +116,6 @@
       100% { transform: translateY(-10vh) translateX(-20px) scale(0.5); opacity: 0; }
     }
 
-    .music-btn {
-      position: fixed;
-      bottom: 30px;
-      left: 30px;
-      z-index: 100;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(10px);
-      color: var(--text-main);
-      padding: 12px 24px;
-      border-radius: 50px;
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: all 0.4s ease;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    }
-
-    .music-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(226, 192, 124, 0.2);
-    }
-
-    .music-btn.playing .icon {
-      animation: pulseMusic 1.5s infinite;
-    }
-
-    @keyframes pulseMusic {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); color: var(--accent-gold); }
-      100% { transform: scale(1); }
-    }
-
     .hero {
       min-height: 100svh;
       padding: 80px 20px 50px;
@@ -484,7 +447,6 @@
       .time-circle { width: 80px; height: 80px; }
       .time-circle strong { font-size: 1.5rem; }
       .time-circle span { font-size: 0.5rem; }
-      .music-btn { bottom: 20px; left: 20px; padding: 10px 16px; font-size: 0.8rem; }
     }
     
     @media (max-width: 480px) {
@@ -511,20 +473,10 @@
   
   <div class="particles" id="particles"></div>
 
-  <!-- Background Music Element -->
-  <audio id="bgMusic" loop preload="auto" autoplay>
-    <!-- Using a royalty-free romantic piano track -->
-    <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-piano-138.mp3" type="audio/mpeg">
-  </audio>
-
-  <button id="musicToggle" class="music-btn">
-    <span class="icon">🎵</span> <span id="musicText">Play Music</span>
-  </button>
-
   <header class="hero">
-    <span class="eyebrow">The Journey to...</span>
+    <span class="eyebrow">Save the Date</span>
     
-    <h1>Ankita's Special Day</h1>
+    <h1>Celebrate Ankita</h1>
     
     <div class="hero-image-wrap">
       <img
@@ -589,13 +541,13 @@
 
   <section>
     <div class="glass-card">
-      <h2>For Ankita ♡</h2>
+      <h2>You're Invited ✨</h2>
       <p>
-        Some days are painted with brighter colors because they celebrate someone truly wonderful.
+        Great moments are meant to be shared with great friends. We are gathering to celebrate Ankita's birthday, and it wouldn't be the same without you!
         <br><br>
-        October 4th is one of those masterpieces. 
+        October 4th is the big day.
         <br><br>
-        May the time leading up to it be filled with anticipation, peace, and countless little moments worth cherishing.
+        Mark your calendars for a day filled with laughter, joy, and unforgettable memories as we celebrate someone truly wonderful.
       </p>
     </div>
   </section>
@@ -611,7 +563,7 @@
   </section>
 
   <section class="closing-text">
-    <h2>A beautiful milestone<br>is approaching...</h2>
+    <h2>Let's make it a day<br>to remember...</h2>
   </section>
 
   <footer>
@@ -619,7 +571,7 @@
       <button class="share-btn" id="shareBtn" style="margin-bottom: 0;">♡ Share This Experience</button>
       <a class="share-btn" href="https://www.instagram.com/ankitatorne04?stkn=MThiMTk5cTkxaTV2cA==" target="_blank" style="margin-bottom: 0; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-        Instagram
+        Connect on Instagram
       </a>
     </div>
     <br>
@@ -629,45 +581,6 @@
   </footer>
 
   <script>
-    const audio = document.getElementById('bgMusic');
-    const musicToggle = document.getElementById('musicToggle');
-    const musicText = document.getElementById('musicText');
-    let isPlaying = false;
-    let hasInteracted = false;
-
-    function tryPlayMusic() {
-      if (!hasInteracted) {
-        audio.play().then(() => {
-          hasInteracted = true;
-          isPlaying = true;
-          musicToggle.classList.add('playing');
-          musicText.textContent = "Pause Music";
-        }).catch(e => {
-          console.log("Autoplay blocked by browser. Will play on first interaction.");
-        });
-      }
-    }
-
-    // Attempt on load and fallback to first user interaction on the screen
-    window.addEventListener('load', tryPlayMusic);
-    document.body.addEventListener('click', tryPlayMusic, { once: true });
-    document.body.addEventListener('touchstart', tryPlayMusic, { once: true });
-
-    musicToggle.addEventListener('click', (e) => {
-      e.stopPropagation(); // Prevent the body click from firing simultaneously
-      hasInteracted = true;
-      if (isPlaying) {
-        audio.pause();
-        musicToggle.classList.remove('playing');
-        musicText.textContent = "Play Music";
-      } else {
-        audio.play().catch(e => console.log("Audio play failed:", e));
-        musicToggle.classList.add('playing');
-        musicText.textContent = "Pause Music";
-      }
-      isPlaying = !isPlaying;
-    });
-
     const particleContainer = document.getElementById("particles");
     const colors = ['#ffffff', '#e2c07c', '#d88ebc', '#8762b9'];
 
