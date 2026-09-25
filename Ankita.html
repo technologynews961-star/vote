@@ -356,8 +356,10 @@
 
     .polaroid img {
       width: 100%;
-      height: 320px;
+      aspect-ratio: 4 / 5;
+      height: auto;
       object-fit: cover;
+      object-position: center 20%;
       filter: grayscale(20%) sepia(10%);
       transition: filter 0.5s;
     }
@@ -479,7 +481,6 @@
 
     @media (max-width: 768px) {
       .polaroid { width: calc(50% - 20px); }
-      .polaroid img { height: 200px; }
       .time-circle { width: 80px; height: 80px; }
       .time-circle strong { font-size: 1.5rem; }
       .time-circle span { font-size: 0.5rem; }
@@ -511,7 +512,7 @@
   <div class="particles" id="particles"></div>
 
   <!-- Background Music Element -->
-  <audio id="bgMusic" loop preload="auto">
+  <audio id="bgMusic" loop preload="auto" autoplay>
     <!-- Using a royalty-free romantic piano track -->
     <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-piano-138.mp3" type="audio/mpeg">
   </audio>
@@ -614,7 +615,13 @@
   </section>
 
   <footer>
-    <button class="share-btn" id="shareBtn">♡ Share This Experience</button>
+    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px;">
+      <button class="share-btn" id="shareBtn" style="margin-bottom: 0;">♡ Share This Experience</button>
+      <a class="share-btn" href="https://www.instagram.com/ankitatorne04?stkn=MThiMTk5cTkxaTV2cA==" target="_blank" style="margin-bottom: 0; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        Instagram
+      </a>
+    </div>
     <br>
     <img class="brand-logo" src="https://res.cloudinary.com/duq1f7pvq/image/upload/v1781721229/ChatGPT_Image_May_8_2026_03_39_35_PM_kyi5ow.png" alt="Logo" />
     <h3>Created by Prisha Service & Solutions</h3>
@@ -626,8 +633,29 @@
     const musicToggle = document.getElementById('musicToggle');
     const musicText = document.getElementById('musicText');
     let isPlaying = false;
+    let hasInteracted = false;
 
-    musicToggle.addEventListener('click', () => {
+    function tryPlayMusic() {
+      if (!hasInteracted) {
+        audio.play().then(() => {
+          hasInteracted = true;
+          isPlaying = true;
+          musicToggle.classList.add('playing');
+          musicText.textContent = "Pause Music";
+        }).catch(e => {
+          console.log("Autoplay blocked by browser. Will play on first interaction.");
+        });
+      }
+    }
+
+    // Attempt on load and fallback to first user interaction on the screen
+    window.addEventListener('load', tryPlayMusic);
+    document.body.addEventListener('click', tryPlayMusic, { once: true });
+    document.body.addEventListener('touchstart', tryPlayMusic, { once: true });
+
+    musicToggle.addEventListener('click', (e) => {
+      e.stopPropagation(); // Prevent the body click from firing simultaneously
+      hasInteracted = true;
       if (isPlaying) {
         audio.pause();
         musicToggle.classList.remove('playing');
